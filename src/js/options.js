@@ -43,12 +43,10 @@ document.addEventListener('DOMContentLoaded', function () {
     args.forEach(function (item) {
       var tr =
         '<tr class="js-item">' +
-          '<td class="js-url"><a href="' + item.url + '" target="_blank">' + item.url + '</a></td>' +
-          '<td><input type="checkbox" disabled ' + (item.pinned ? 'checked' : '') + '></td>' +
-          '<td>' +
-            '<button class="btn btn-danger">' +
-              '<i class="glyphicon glyphicon-remove"></i>Delete' +
-            '</button>' +
+          '<td style="vertical-align: middle;" class="js-url"><a href="' + item.url + '" target="_blank">' + item.url + '</a></td>' +
+          '<td style="vertical-align: middle;"><input type="checkbox" disabled ' + (item.pinned ? 'checked' : '') + '></td>' +
+          '<td style="vertical-align: middle;">' +
+            '<button class="btn btn-danger btn-lg pull-right"><i class="glyphicon glyphicon-remove"></i> Delete</button>' +
           '</td>' +
         '</tr>';
       list.push(tr);
