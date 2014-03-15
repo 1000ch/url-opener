@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <style>table {font-size: 20px;}</style>
   </head>
-  <body>
+  <body class="modal-open">
     <div class="container">
       <header class="page-header">
         <h1>
@@ -31,7 +31,7 @@
             </td>
           </tr>
         </table>
-        <div class="modal fade" id="js-modal" tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true">
+        <div class="modal fade in" id="js-modal" tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
@@ -66,5 +66,6 @@
     </div>
     <script src="../js/lib/jquery.min.js"></script>
     <script src="../js/lib/bootstrap.min.js"></script>
+    <div class="modal-backdrop fade in"></div>
   </body>
 </html>
