@@ -1,9 +1,3 @@
-if (!String.prototype.contains) {
-  String.prototype.contains = function (value, index) {
-    return (this.indexOf(value, index | 0) !== -1);
-  };
-}
-
 // launch options.html on installation
 chrome.runtime.onInstalled.addListener(function (details) {
   if (details.reason == 'install'){
