@@ -23,6 +23,20 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
+  $urls.on('change', '.js-pinned', function () {
+    var $this = $(this);
+    var $tr = $this.parents('tr');
+    var url = $tr.find('.js-url').text();
+    
+    data.forEach(function (item) {
+      if (url === item.url) {
+        item.pinned = $this.prop('checked');
+      }
+    });
+    
+    chromeStorage.set({'urlopener_data': data});
+  });
+  
   $urls.on('click', '.btn-danger', function () {
     var $this = $(this);
     var $tr = $this.parents('tr');
@@ -44,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
       var tr =
         '<tr class="js-item">' +
           '<td style="vertical-align: middle;" class="js-url"><a href="' + item.url + '" target="_blank">' + item.url + '</a></td>' +
-          '<td style="vertical-align: middle;"><input type="checkbox" disabled ' + (item.pinned ? 'checked' : '') + '></td>' +
+          '<td style="vertical-align: middle;"><input type="checkbox" class="js-pinned" ' + (item.pinned ? 'checked' : '') + '></td>' +
           '<td style="vertical-align: middle;">' +
             '<button class="btn btn-danger btn-lg pull-right"><i class="glyphicon glyphicon-remove"></i> Delete</button>' +
           '</td>' +

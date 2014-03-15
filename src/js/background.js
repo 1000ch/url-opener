@@ -25,16 +25,23 @@ chrome.browserAction.onClicked.addListener(function () {
     }
 
     chrome.tabs.query({}, function (result) {
+      var openedTabs = {};
       var openedUrls = [];
       result.forEach(function (tab) {
+        openedTabs[tab.url] = tab.id;
         openedUrls.push(tab.url);
       });
       data.forEach(function (item) {
         if (openedUrls.every(function (openedUrl) {
-          return !openedUrl.contains(item.url);
+          return !openedUrl.contains(item.url)
         })) {
           chrome.tabs.create({
             url: item.url,
+            pinned: item.pinned
+          });
+        } else {
+          var tabId = openedTabs[item.url];
+          chrome.tabs.update(tabId, {
             pinned: item.pinned
           });
         }
