@@ -6,10 +6,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var $url = $('#js-url');
   var $pinned = $('#js-pinned');
-  var $save = $('#js-save');
+  var $form = $('#js-form');
   var $urls = $('#js-urls');
 
-  $save.on('click', function () {
+  $form.on('submit', function (e) {
     if (!Array.isArray(data)) {
       data = [];
     }
@@ -18,8 +18,9 @@ document.addEventListener('DOMContentLoaded', function () {
       pinned: $pinned.prop('checked')
     });
     chromeStorage.set({'urlopener_data': data}, function () {
-      console.log(data);
       renderItem(data);
+      $url.val('');
+      $pinned.prop('checked', false);
     });
   });
 

@@ -32,16 +32,18 @@ chrome.browserAction.onClicked.addListener(function () {
         openedUrls.push(tab.url);
       });
       data.forEach(function (item) {
-        if (openedUrls.every(function (openedUrl) {
-          return !openedUrl.contains(item.url)
+        if (!openedUrls.some(function (openedUrl) {
+          var isOpened = openedUrl.indexOf(item.url) !== -1;
+          if (isOpened) {
+            var tabId = openedTabs[openedUrl];
+            chrome.tabs.update(tabId, {
+              pinned: item.pinned
+            });
+          }
+          return isOpened;
         })) {
           chrome.tabs.create({
             url: item.url,
-            pinned: item.pinned
-          });
-        } else {
-          var tabId = openedTabs[item.url];
-          chrome.tabs.update(tabId, {
             pinned: item.pinned
           });
         }
