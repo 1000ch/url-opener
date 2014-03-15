@@ -6,8 +6,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var $url = $('#js-url');
   var $pinned = $('#js-pinned');
+  var $save = $('#js-save');
   var $form = $('#js-form');
   var $urls = $('#js-urls');
+
+  $save.on('click', function () {
+    $form.trigger('submit');
+  });
 
   $form.on('submit', function (e) {
     if (!Array.isArray(data)) {
