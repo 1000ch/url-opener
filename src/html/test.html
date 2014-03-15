@@ -23,6 +23,13 @@
             <th>Pinned</th>
             <th></th>
           </tr>
+          <tr class="js-item">
+            <td style="vertical-align: middle;" class="js-url"><a href="' + item.url + '" target="_blank">http://1000ch.net</a></td>
+            <td style="vertical-align: middle;"><input type="checkbox" class="js-pinned" checked></td>
+            <td style="vertical-align: middle;">
+              <button class="btn btn-danger btn-lg pull-right"><i class="glyphicon glyphicon-remove"></i> Delete</button>
+            </td>
+          </tr>
         </table>
         <div class="modal fade" id="js-modal" tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true">
           <div class="modal-dialog">
@@ -59,6 +66,5 @@
     </div>
     <script src="../js/lib/jquery.min.js"></script>
     <script src="../js/lib/bootstrap.min.js"></script>
-    <script src="../js/options.js"></script>
   </body>
 </html>

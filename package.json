@@ -1,0 +1,31 @@
+{
+  "name": "url-opener",
+  "version": "0.1.9",
+  "description": "Open urls with 1 click",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/1000ch/url-opener.git"
+  },
+  "author": "1000ch",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/1000ch/url-opener/issues"
+  },
+  "homepage": "https://github.com/1000ch/url-opener",
+  "peerDependencies": {
+    "grunt": "^0.4.4"
+  },
+  "devDependencies": {
+    "grunt-jsvalidate": "^0.2.2",
+    "grunt-contrib-jshint": "^0.9.2",
+    "grunt-uncss": "^0.2.2",
+    "grunt-csscomb": "^2.0.1",
+    "grunt-csso": "^0.6.0",
+    "grunt-contrib-htmlmin": "^0.2.0",
+    "grunt-contrib-uglify": "^0.4.0",
+    "grunt-contrib-copy": "^0.5.0"
+  }
+}
