@@ -105,9 +105,9 @@ $(function () {
     items.forEach(function (item) {
       var li =
         '<li class="list-group-item" data-url="' + item.url + '">' +
-          '<a href="' + item.url + '">' + item.url + '</a>' + 
+          '<span class="js-pin glyphicon glyphicon-pushpin' + (item.pinned ? ' is-pinned' : '') + '"></span>' +
+          '<a style="margin-left: 10px;" href="' + item.url + '">' + item.url + '</a>' + 
           '<span class="js-del glyphicon glyphicon-trash pull-right"></span>' +
-          '<span class="js-pin glyphicon glyphicon-pushpin pull-right' + (item.pinned ? ' is-pinned' : '') + '"></span>' +
         '</li>';
       list.push(li);
     });

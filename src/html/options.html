@@ -10,8 +10,11 @@
         -webkit-user-select: none;
         user-select: none;
       }
+      .glyphicon:hover {
+        opacity: 0.5;
+      }
       .is-pinned {
-        color: hotpink;
+        color: red;
       }
     </style>
   </head>
@@ -21,9 +24,9 @@
         <h1>
           <img src="../icons/icon128.png" width="64px" height="64px">
           <a href="https://github.com/1000ch/url-opener" target="_blank">URL Opener</a> Settings
-          <small>You can open following urls with 1 click.</small>
+          <small>Click extension icon to open following urls.</small>
           <form role="form" id="js-form">
-            <div class="input-group">
+            <div class="input-group input-group-lg">
               <span class="input-group-addon">
                 <span class="glyphicon glyphicon-pushpin"></span>
                 <input type="checkbox" id="js-pinned" aria-label="...">
@@ -40,9 +43,9 @@
         <div class="panel-heading">URLs and its' pinned or not</div>
         <ul id="js-urls" class="list-group">
           <li class="list-group-item">
+            <span class="glyphicon glyphicon-pushpin"></span>
             <a href="http://1000ch.net">http://1000ch.net</a>
             <span class="glyphicon glyphicon-trash pull-right"></span>
-            <span class="glyphicon glyphicon-pushpin pull-right"></span>
           </li>
         </ul>
       </div>
