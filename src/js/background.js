@@ -13,31 +13,42 @@ chrome.browserAction.onClicked.addListener(function () {
 
   chromeStorage.get(dataKey, function(items) {
 
-    data = items[dataKey] || {};
+    data = items[dataKey];
+
     if (!Array.isArray(data)) {
       data = [];
     }
 
     chrome.tabs.query({}, function (result) {
+
       var openedTabs = {};
       var openedUrls = [];
+
       result.forEach(function (tab) {
         openedTabs[tab.url] = tab.id;
         openedUrls.push(tab.url);
       });
+
       data.forEach(function (item) {
+
         if (!openedUrls.some(function (openedUrl) {
-          var isOpened = openedUrl.indexOf(item.url) !== -1;
+
+          var protocol = /^[^:]+(?=:\/\/)/;
+          var isOpened = openedUrl.indexOf(item.url.replace(protocol, '')) !== -1;
+          var tabId = openedTabs[openedUrl];
+
           if (isOpened) {
-            var tabId = openedTabs[openedUrl];
             chrome.tabs.update(tabId, {
               pinned: item.pinned
             });
+
             chrome.tabs.move(tabId, {
               index: item.index
             });
           }
+
           return isOpened;
+
         })) {
           chrome.tabs.create({
             url: item.url,
