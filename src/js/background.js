@@ -33,12 +33,16 @@ chrome.browserAction.onClicked.addListener(function () {
             chrome.tabs.update(tabId, {
               pinned: item.pinned
             });
+            chrome.tabs.move(tabId, {
+              index: item.index
+            });
           }
           return isOpened;
         })) {
           chrome.tabs.create({
             url: item.url,
-            pinned: item.pinned
+            pinned: item.pinned,
+            index: item.index
           });
         }
       });

@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+$(function () {
 
   var chromeStorage = chrome.storage.sync;
   var dataKey = 'urlopener_data';
@@ -10,18 +10,57 @@ document.addEventListener('DOMContentLoaded', function () {
   var $form = $('#js-form');
   var $urls = $('#js-urls');
 
+  new Slip($urls.get(0));
+
+  $urls.on('slip:swipe', function(e) {
+
+    var $li = $(e.originalEvent.target);
+    var url = $li.attr('data-url');
+
+    data = data.filter(function (item) {
+      return (item.url !== url);
+    });
+
+    chromeStorage.set({'urlopener_data': data}, function () {
+      e.target.parentNode.removeChild(e.originalEvent.target);
+    });
+  });
+
+  $urls.on('slip:reorder', function(e) {
+
+    e.target.parentNode.insertBefore(e.originalEvent.target, e.originalEvent.detail.insertBefore);
+
+    var url = $(e.originalEvent.target).attr('data-url');
+    var order = e.originalEvent.detail.spliceIndex;
+    var $list = $urls.find('li');
+
+    data.forEach(function (item) {
+      if (url === item.url) {
+        item.order = order;
+      } else {
+        item.order = $list.index($list.filter('[data-url="' + item.url + '"]').get(0));
+      }
+    });
+
+    chromeStorage.set({'urlopener_data': data});
+  });
+
   $save.on('click', function () {
     $form.trigger('submit');
   });
 
   $form.on('submit', function (e) {
+
     if (!Array.isArray(data)) {
       data = [];
     }
+
     data.push({
       url: $url.val(),
-      pinned: $pinned.prop('checked')
+      pinned: $pinned.prop('checked'),
+      order: data.length
     });
+
     chromeStorage.set({'urlopener_data': data}, function () {
       renderItem(data);
       $url.val('');
@@ -29,54 +68,60 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  $urls.on('change', '.js-pinned', function () {
-    var $this = $(this);
-    var $tr = $this.parents('tr');
-    var url = $tr.find('.js-url').text();
+  $urls.on('click', '.js-pin', function () {
+
+    var $li = $(this).toggleClass('is-pinned').closest('li');
+    var url = $li.attr('data-url');
     
     data.forEach(function (item) {
       if (url === item.url) {
-        item.pinned = $this.prop('checked');
+        item.pinned = !item.pinned;
       }
     });
     
     chromeStorage.set({'urlopener_data': data});
   });
   
-  $urls.on('click', '.btn-danger', function () {
-    var $this = $(this);
-    var $tr = $this.parents('tr');
-    var url = $tr.find('.js-url').text();
+  $urls.on('click', '.js-del', function () {
+    var $li = $(this).closest('li');
+    var url = $li.attr('data-url');
 
     data = data.filter(function (item) {
       return (item.url !== url);
     });
 
     chromeStorage.set({'urlopener_data': data}, function () {
-      $tr.remove();
+      $li.remove();
     });
   });
   
-  function renderItem(args) {
-    args = Array.isArray(args) ? args : [];
-    var list = [];
-    args.forEach(function (item) {
-      var tr =
-        '<tr class="js-item">' +
-          '<td style="vertical-align: middle;" class="js-url"><a href="' + item.url + '" target="_blank">' + item.url + '</a></td>' +
-          '<td style="vertical-align: middle;"><input type="checkbox" class="js-pinned" ' + (item.pinned ? 'checked' : '') + '></td>' +
-          '<td style="vertical-align: middle;">' +
-            '<button class="btn btn-danger btn-lg pull-right"><i class="glyphicon glyphicon-remove"></i> Delete</button>' +
-          '</td>' +
-        '</tr>';
-      list.push(tr);
+  function renderItem(items) {
+
+    items = items.sort(function (a, b) {
+      return (a.order || 0) > (b.order || 0);
     });
-    $urls.find('tr').filter('.js-item').remove();
-    $urls.append(list);
+    
+    var list = [];
+    items.forEach(function (item) {
+      var li =
+        '<li class="list-group-item" data-url="' + item.url + '">' +
+          '<a href="' + item.url + '">' + item.url + '</a>' + 
+          '<span class="js-del glyphicon glyphicon-trash pull-right"></span>' +
+          '<span class="js-pin glyphicon glyphicon-pushpin pull-right' + (item.pinned ? ' is-pinned' : '') + '"></span>' +
+        '</li>';
+      list.push(li);
+    });
+    $urls.html(list);
   }
 
   chromeStorage.get(dataKey, function(items) {
-    data = Array.isArray(items[dataKey]) ? items[dataKey] : [];
+
+    data = items[dataKey];
+
+    if (!Array.isArray(data)) {
+      data = [];
+    }
+    
     renderItem(data);
   });
 });

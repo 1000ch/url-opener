@@ -4,7 +4,16 @@
     <meta charset="utf-8">
     <title>URL Opener</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <style>table {font-size: 20px;}</style>
+    <style>
+      li {
+        font-size: 24px;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+      .is-pinned {
+        color: hotpink;
+      }
+    </style>
   </head>
   <body>
     <div class="container">
@@ -13,52 +22,34 @@
           <img src="../icons/icon128.png" width="64px" height="64px">
           <a href="https://github.com/1000ch/url-opener" target="_blank">URL Opener</a> Settings
           <small>You can open following urls with 1 click.</small>
-          <button class="btn btn-primary btn-lg pull-right" data-toggle="modal" data-target="#js-modal">Add new URL</button>
+          <form role="form" id="js-form">
+            <div class="input-group">
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-pushpin"></span>
+                <input type="checkbox" id="js-pinned" aria-label="...">
+              </span>
+              <input type="text" class="form-control" id="js-url" placeholder="URL" required pattern="https?://.+">
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-primary" id="js-save">Save</button>
+              </span>
+            </div>
+          </form>
         </h1>
       </header>
-      <section>
-        <table class="table table-hover" id="js-urls">
-          <tr>
-            <th>URL</th>
-            <th>Pinned</th>
-            <th></th>
-          </tr>
-        </table>
-        <div class="modal fade" id="js-modal" tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="modal-labels">Add new URL</h4>
-              </div>
-              <div class="modal-body">
-                <form role="form" id="js-form">
-                  <div class="form-group">
-                    <label for="js-url">URL</label>
-                    <input type="text" class="form-control" id="js-url" placeholder="Enter URL">
-                  </div>
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox" id="js-pinned"> Open pinned tab
-                    </label>
-                  </div>
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" id="js-save">Save changes</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section>
-        <h2>Author</h2>
-        <p><a href="http://twitter.com/1000ch" target="_blank">@1000ch</a></p>
-      </section>
+      <div class="panel panel-default">
+        <div class="panel-heading">URLs and its' pinned or not</div>
+        <ul id="js-urls" class="list-group">
+          <li class="list-group-item">
+            <a href="http://1000ch.net">http://1000ch.net</a>
+            <span class="glyphicon glyphicon-trash pull-right"></span>
+            <span class="glyphicon glyphicon-pushpin pull-right"></span>
+          </li>
+        </ul>
+      </div>
     </div>
-    <script src="../js/lib/jquery.min.js"></script>
-    <script src="../js/lib/bootstrap.min.js"></script>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/slip.js"></script>
     <script src="../js/options.js"></script>
   </body>
 </html>
