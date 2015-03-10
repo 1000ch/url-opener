@@ -1,7 +1,5 @@
 {
   "name": "url-opener",
-  "version": "0.2.0",
-  "description": "Open urls with 1 click",
   "scripts": {
     "build": "gulp build && rake"
   },
