@@ -10,51 +10,78 @@ chrome.browserAction.onClicked.addListener(function () {
 
   var chromeStorage = chrome.storage.sync;
   var dataKey = 'urlopener_data';
+  var protocol = /^[^:]+(?=:\/\/)/;
 
   chromeStorage.get(dataKey, function(items) {
 
-    data = items[dataKey];
+    var array = items[dataKey];
 
-    if (!Array.isArray(data)) {
-      data = [];
+    if (!Array.isArray(array)) {
+      array = [];
     }
 
-    chrome.tabs.query({}, function (result) {
+    chrome.tabs.query({}, function (tabs) {
 
       var openedTabs = {};
       var openedUrls = [];
 
-      result.forEach(function (tab) {
-        openedTabs[tab.url] = tab.id;
-        openedUrls.push(tab.url);
+      tabs.forEach(function (tab) {
+        var url = tab.url.replace(protocol, '');
+        openedTabs[url] = tab.id;
+        openedUrls.push(url);
       });
 
-      data.forEach(function (item) {
+      array.forEach(function (item) {
 
-        if (!openedUrls.some(function (openedUrl) {
+        var url = item.url.replace(protocol, '');
+        var target;
 
-          var protocol = /^[^:]+(?=:\/\/)/;
-          var isOpened = openedUrl.indexOf(item.url.replace(protocol, '')) !== -1;
-          var tabId = openedTabs[openedUrl];
+        if (openedUrls.some(function (openedUrl) {
 
-          if (isOpened) {
-            chrome.tabs.update(tabId, {
-              pinned: item.pinned
-            });
+          if (openedUrl.indexOf(url) !== -1) {
+            target = openedUrl;
+            return true;
+          } else {
+            return false;
+          }
 
+        })) {
+          //　item.url is already opened
+          console.log(target, item.index);
+
+          var tabId = openedTabs[target];
+
+          chrome.tabs.update(tabId, {
+            pinned: item.pinned
+          });
+
+          if (Number.isInteger(item.index)) {
             chrome.tabs.move(tabId, {
               index: item.index
             });
           }
 
-          return isOpened;
+        } else {
+          // item.url is not opened yet
 
-        })) {
-          chrome.tabs.create({
-            url: item.url,
-            pinned: item.pinned,
-            index: item.index
-          });
+          if (Number.isInteger(item.index)) {
+
+            chrome.tabs.create({
+              url: item.url,
+              pinned: item.pinned,
+              index: item.index
+            });
+
+          } else {
+
+            chrome.tabs.create({
+              url: item.url,
+              pinned: item.pinned
+            });
+
+          }
+
+          openedUrls.push(item.url.replace(protocol, ''));
         }
       });
     });
