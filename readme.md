@@ -1,4 +1,6 @@
-# [URL opener](http://goo.gl/4NPOjY)
+# [URL opener](http://bit.ly/url-opener)
+
+![](capture.png)
 
 ## Usage
 
