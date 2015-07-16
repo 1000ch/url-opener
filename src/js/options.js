@@ -72,16 +72,16 @@ $(function () {
 
     var $li = $(this).toggleClass('is-pinned').closest('li');
     var url = $li.attr('data-url');
-    
+
     data.forEach(function (item) {
       if (url === item.url) {
         item.pinned = !item.pinned;
       }
     });
-    
+
     chromeStorage.set({'urlopener_data': data});
   });
-  
+
   $urls.on('click', '.js-del', function () {
     var $li = $(this).closest('li');
     var url = $li.attr('data-url');
@@ -94,19 +94,20 @@ $(function () {
       $li.remove();
     });
   });
-  
+
   function renderItem(items) {
 
     items = items.sort(function (a, b) {
       return (a.order || 0) > (b.order || 0);
     });
-    
+
     var list = [];
     items.forEach(function (item) {
       var li =
         '<li class="list-group-item" data-url="' + item.url + '">' +
           '<span class="js-pin glyphicon glyphicon-pushpin' + (item.pinned ? ' is-pinned' : '') + '"></span>' +
-          '<a style="margin-left: 10px;" href="' + item.url + '">' + item.url + '</a>' + 
+          '<a style="margin-left: 10px;" href="' + item.url + '">' + item.url + '</a>' +
+          '<span class="js-del glyphicon glyphicon-bars pull-right"></span>' +
           '<span class="js-del glyphicon glyphicon-trash pull-right"></span>' +
         '</li>';
       list.push(li);
@@ -121,7 +122,7 @@ $(function () {
     if (!Array.isArray(data)) {
       data = [];
     }
-    
+
     renderItem(data);
   });
 });
