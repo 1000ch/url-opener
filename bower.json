@@ -14,7 +14,7 @@
   ],
   "dependencies": {
     "slip": "pornel/slip#~1.2.0",
-    "bootstrap": "twbs/bootstrap#~3.3.4",
-    "jquery": "~2.1.4"
+    "bootstrap": "twbs/bootstrap#~3.3.6",
+    "jquery": "~2.2.0"
   }
 }
